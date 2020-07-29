@@ -1,8 +1,7 @@
 #!/usr/bin/env groovy
 def bintrayautomation = "bintrayautomation"
 def labels = ""
-def pega_chartName = ""
-def addons_chartName = ""
+def bintrayPackageVersion = "1.0.0"
 node("pc-2xlarge") {
 
   stage("Initialze"){
@@ -39,27 +38,28 @@ node("pc-2xlarge") {
     sh "cat index.yaml"
      withCredentials([usernamePassword(credentialsId: "bintrayautomation",
       passwordVariable: 'BINTRAY_APIKEY', usernameVariable: 'BINTRAY_USERNAME')]) {
-      pega_chartName = "pega-${prNumber}.${env.BUILD_NUMBER}.tgz"
-      addons_chartName = "addons-${prNumber}.${env.BUILD_NUMBER}.tgz"
+      chartVersion = "${prNumber}.${env.BUILD_NUMBER}"
+      pega_chartName = "pega-${chartVersion}.tgz"
+      addons_chartName = "addons-${chartVersion}.tgz"
       sh "curl -X DELETE -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/index.yaml"
-      sh "curl -T ${pega_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/1.0.0/"
-      sh "curl -T ${addons_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/1.0.0/"
-      sh "curl -T index.yaml -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/1.0.0/"
-      sh "curl -X POST -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/1.0.0/publish"
+      sh "curl -T ${pega_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/"
+      sh "curl -T ${addons_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/"
+      sh "curl -T index.yaml -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/"
+      sh "curl -X POST -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/publish"
    } 
   }
 
  stage("Trigger Orchestrator") {
-    /*jobMap = [:]
+    jobMap = [:]
     jobMap["job"] = "../kubernetes-test-orchestrator/US-366319"
     jobMap["parameters"] = [
                             string(name: 'PROVIDERS', value: labels),
-                            string(name: 'HELM_CHART_NAME', value: pega_chartName+","+addons_chartName),
+                            string(name: 'HELM_CHART_VERSION', value: chartVersion),
                         ]
     jobMap["propagate"] = true
     jobMap["quietPeriod"] = 0 
     resultWrapper = build jobMap
-    currentBuild.result = resultWrapper.result*/
+    currentBuild.result = resultWrapper.result
     echo "Into Trigger Orchestrator"
  } 
 

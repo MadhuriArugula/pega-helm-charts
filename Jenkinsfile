@@ -53,8 +53,8 @@ node("pc-2xlarge") {
                 UPDATE_STATUS_CODE = sh(script: "curl -T --write-out '%{http_code}' index.yaml -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/", returnStdout: true).trim()
                 PUBLISH_STATUS_CODE = sh(script: "curl -X POST -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/publish --write-out '%{http_code}'", returnStdout: true).trim()
                 
-                if (${DELETE_STATUS_CODE} != 200 || ${PEGA_STATUS_CODE} != 200 || ${ADDONS_STATUS_CODE} != 200 
-                      || ${UPDATE_STATUS_CODE} != 200|| ${PUBLISH_STATUS_CODE} != 200) {
+                if ( "${DELETE_STATUS_CODE}" != 200 || "${PEGA_STATUS_CODE}" != 200 || "${ADDONS_STATUS_CODE}" != 200 
+                      || "${UPDATE_STATUS_CODE}" != 200|| "${PUBLISH_STATUS_CODE}" != 200 ) {
                     currentBuild.result = 'FAILURE'
                     pullRequest.comment("Unable to publish helm charts to bintray repository. Please retry")
                 }

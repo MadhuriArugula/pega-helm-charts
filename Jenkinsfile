@@ -48,9 +48,9 @@ node("pc-2xlarge") {
                 pega_chartName = "pega-${chartVersion}.tgz"
                 addons_chartName = "addons-${chartVersion}.tgz"
                 DELETE_STATUS_CODE = sh(script: "curl -X DELETE -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/index.yaml --write-out '%{http_code}'", returnStdout: true).trim()
-                PEGA_STATUS_CODE = sh(script: "curl -T --write-out '%{http_code}' ${pega_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/", returnStdout: true).trim()
-                ADDONS_STATUS_CODE = sh(script: "curl -T --write-out '%{http_code}' ${addons_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/", returnStdout: true).trim()
-                UPDATE_STATUS_CODE = sh(script: "curl -T --write-out '%{http_code}' index.yaml -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/", returnStdout: true).trim()
+                PEGA_STATUS_CODE = sh(script: "curl -T ${pega_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/ --write-out '%{http_code}'", returnStdout: true).trim()
+                ADDONS_STATUS_CODE = sh(script: "curl -T ${addons_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/ --write-out '%{http_code}' ", returnStdout: true).trim()
+                UPDATE_STATUS_CODE = sh(script: "curl -T index.yaml -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/ --write-out '%{http_code}'", returnStdout: true).trim()
                 PUBLISH_STATUS_CODE = sh(script: "curl -X POST -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/publish --write-out '%{http_code}'", returnStdout: true).trim()
                 
                 if ( "${DELETE_STATUS_CODE}" != 200 || "${PEGA_STATUS_CODE}" != 200 || "${ADDONS_STATUS_CODE}" != 200 

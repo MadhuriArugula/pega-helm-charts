@@ -2,7 +2,7 @@
 def bintrayautomation = "bintrayautomation"
 def labels = ""
 def bintrayPackageVersion = "1.0.0" 
-def curlSuccessStatus = {"message":"success"}
+def curlSuccessStatus = '{"message":"success"}'
 
 node("pc-2xlarge") {
 

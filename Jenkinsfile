@@ -52,13 +52,18 @@ node("pc-2xlarge") {
                 ADDONS_STATUS_CODE = sh(script: "curl -T ${addons_chartName} -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/ --write-out '%{http_code}' ", returnStdout: true).trim()
                 UPDATE_STATUS_CODE = sh(script: "curl -T index.yaml -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/ --write-out '%{http_code}'", returnStdout: true).trim()
                 PUBLISH_STATUS_CODE = sh(script: "curl -X POST -u${BINTRAY_USERNAME}:${BINTRAY_APIKEY} https://api.bintray.com/content/pegasystems/helm-test-automation/helm-test-automation/${bintrayPackageVersion}/publish --write-out '%{http_code}'", returnStdout: true).trim()
-                
-                if ( "${DELETE_STATUS_CODE}" != 200 || "${PEGA_STATUS_CODE}" != 200 || "${ADDONS_STATUS_CODE}" != 200 
-                      || "${UPDATE_STATUS_CODE}" != 200|| "${PUBLISH_STATUS_CODE}" != 200 ) {
+                echo "DELETE_STATUS_CODE-- ${DELETE_STATUS_CODE}"
+                echo "PEGA_STATUS_CODE-- ${PEGA_STATUS_CODE}"
+                echo "ADDONS_STATUS_CODE-- ${ADDONS_STATUS_CODE}"
+                echo "UPDATE_STATUS_CODE-- ${UPDATE_STATUS_CODE}"
+                echo "PUBLISH_STATUS_CODE-- ${PUBLISH_STATUS_CODE}"
+
+                if ( "${DELETE_STATUS_CODE}" != 200 || "${PEGA_STATUS_CODE}" != 201 || "${ADDONS_STATUS_CODE}" != 201
+                      || "${UPDATE_STATUS_CODE}" != 201|| "${PUBLISH_STATUS_CODE}" != 200 ) {
                     currentBuild.result = 'FAILURE'
                     pullRequest.comment("Unable to publish helm charts to bintray repository. Please retry")
+                    error "This pipeline stops here! Unable to perform helm charts publish to bintray repository."
                 }
-
             } 
       }
 

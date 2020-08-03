@@ -60,7 +60,7 @@ node("pc-2xlarge") {
                 echo "PUBLISH_STATUS_CODE-- ${PUBLISH_STATUS_CODE}"
 
                 if ( "${DELETE_STATUS_CODE}" != "${curlSuccessStatus}"+"200" || "${PEGA_STATUS_CODE}" != "${curlSuccessStatus}"+"201" || "${ADDONS_STATUS_CODE}" != "${curlSuccessStatus}"+"201"
-                      || "${UPDATE_STATUS_CODE}" != "${curlSuccessStatus}"+"201" || "${PUBLISH_STATUS_CODE}" != "${curlSuccessStatus}"+"200" ) {
+                      || "${UPDATE_STATUS_CODE}" != "${curlSuccessStatus}"+"201" || "${PUBLISH_STATUS_CODE}" != '{"files":3}'+"200" ) {
                     currentBuild.result = 'FAILURE'
                     pullRequest.comment("Unable to publish helm charts to bintray repository. Please retry")
                     error "This pipeline stops here! Unable to perform helm charts publish to bintray repository."

@@ -2,6 +2,7 @@
 def bintrayautomation = "bintrayautomation"
 def labels = ""
 def bintrayPackageVersion = "1.0.0" 
+def curlSuccessStatus = {"message":"success"}
 
 node("pc-2xlarge") {
 
@@ -58,8 +59,8 @@ node("pc-2xlarge") {
                 echo "UPDATE_STATUS_CODE-- ${UPDATE_STATUS_CODE}"
                 echo "PUBLISH_STATUS_CODE-- ${PUBLISH_STATUS_CODE}"
 
-                if ( "${DELETE_STATUS_CODE}" != 200 || "${PEGA_STATUS_CODE}" != 201 || "${ADDONS_STATUS_CODE}" != 201
-                      || "${UPDATE_STATUS_CODE}" != 201|| "${PUBLISH_STATUS_CODE}" != 200 ) {
+                if ( "${DELETE_STATUS_CODE}" != "${curlSuccessStatus}"+"200" || "${PEGA_STATUS_CODE}" != "${curlSuccessStatus}"+"201" || "${ADDONS_STATUS_CODE}" != "${curlSuccessStatus}"+"201"
+                      || "${UPDATE_STATUS_CODE}" != "${curlSuccessStatus}"+"201" || "${PUBLISH_STATUS_CODE}" != "${curlSuccessStatus}"+"200" ) {
                     currentBuild.result = 'FAILURE'
                     pullRequest.comment("Unable to publish helm charts to bintray repository. Please retry")
                     error "This pipeline stops here! Unable to perform helm charts publish to bintray repository."

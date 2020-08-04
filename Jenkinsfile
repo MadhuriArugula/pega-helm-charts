@@ -74,6 +74,7 @@ node("pc-2xlarge") {
           jobMap["job"] = "../kubernetes-test-orchestrator/US-366319"
           jobMap["parameters"] = [
                                   string(name: 'PROVIDERS', value: labels),
+                                  string(name: 'WEB_READY_IMAGE_NAME', value: ""),
                                   string(name: 'HELM_CHART_VERSION', value: chartVersion),
                               ]
           jobMap["propagate"] = true
@@ -82,7 +83,6 @@ node("pc-2xlarge") {
           currentBuild.result = resultWrapper.result
           echo "Into Trigger Orchestrator"
       } 
-
   }
 
 def validateProviderLabel(String provider){

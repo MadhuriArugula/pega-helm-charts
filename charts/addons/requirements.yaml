@@ -4,8 +4,8 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com
   condition: traefik.enabled
 - name: aws-alb-ingress-controller
-  version: "0.1.10"
-  repository: https://kubernetes-charts-incubator.storage.googleapis.com/
+  version: "1.0.2"
+  repository: http://storage.googleapis.com/kubernetes-charts-incubator
   condition: aws-alb-ingress-controller.enabled
 - name: elasticsearch
   version: "1.15.1"

@@ -32,6 +32,7 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     # set to ip mode to route traffic directly to the pods ip
     alb.ingress.kubernetes.io/target-type: ip
+    external-dns.alpha.kubernetes.io/hostname: {{ template "domainName" dict "node" .node }}
 {{- end }}
 {{- if not (and (.node.ingress.annotations) ( .node.ingress.annotations | quote | regexFind "alb.ingress.kubernetes.io/target-group-attributes:" ) ) }}
     # enable sticky sessions on target group

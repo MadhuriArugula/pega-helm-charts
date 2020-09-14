@@ -17,7 +17,7 @@ metadata:
     {{ toYaml .node.ingress.tls.ssl_annotation }}
   {{ end }}
   {{ if .node.ingress.annotations }}
-  {{ toYaml .node.ingress.annotations }}
+    {{ toYaml .node.ingress.annotations }}
   {{ end }}
   {{ end }}
   {{ end }}

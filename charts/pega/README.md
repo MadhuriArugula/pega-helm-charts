@@ -400,6 +400,19 @@ A `volumeClaimTemplate` may be configured for any tier to allow for persistent s
 
 The `deploymentStrategy` can be used to optionally configure the [strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) for any tiers deployed as a Kubernetes Deployment. This value will cannot be applied to StatefulSet deployed tiers which use the `volumeClaimTemplate` parameter.
 
+### Security context
+
+You may configure security context for Pega pod deployments. By default ```pegasystems/pega``` image uses ```pegauser(9001)``` as the user.
+
+Example:
+
+```yaml
+tier:
+  - name: my-tier
+    securityContext:
+      runAsUser: RUN_AS_USER
+```
+
 ### Environment variables
 
 Pega supports a variety of configuration options for cluster-wide and application settings. In cases when you want to pass a specific environment variable into your deployment on a tier-by-tier basis, you specify a custom `env` block for your tier as shown in the example below.

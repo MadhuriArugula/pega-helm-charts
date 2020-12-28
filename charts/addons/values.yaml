@@ -34,23 +34,18 @@ traefik:
       memory: 500Mi
 
 # When deploying on AWS EKS, set this to true to install aws-alb-ingress-controller.
-aws-alb-ingress-controller:
-  enabled: false
+aws-load-balancer-controller:
+  enabled: true
   ## Resources created by the ALB Ingress controller will be prefixed with this string
-  clusterName: "YOUR_EKS_CLUSTER_NAME"
+  clusterName: "arugm-addons"
   ## Auto Discover awsRegion from ec2metadata, set this to true and omit awsRegion when ec2metadata is available.
   autoDiscoverAwsRegion: false
   ## AWS region of k8s cluster, required if ec2metadata is unavailable from controller pod
   ## Required if autoDiscoverAwsRegion != true
-  awsRegion: "YOUR_EKS_CLUSTER_REGION"
-  ## Auto Discover awsVpcID from ec2metadata, set this to true and omit awsVpcID: " when ec2metadata is available.
-  autoDiscoverAwsVpcID: false
+  region: "us-east-1"
   ## VPC ID of k8s cluster, required if ec2metadata is unavailable from controller pod
   ## Required if autoDiscoverAwsVpcID != true
-  awsVpcID: "YOUR_EKS_CLUSTER_VPC_ID"
-  extraEnv: {}
-  # AWS_ACCESS_KEY_ID: "YOUR_AWS_ACCESS_KEY_ID"
-  # AWS_SECRET_ACCESS_KEY: "YOUR_AWS_SECRET_ACCESS_KEY"
+  vpcId: "vpc-07e8fd2660b87dace"
 
 # Configure EFK stack for logging:
 # For a complete EFK stack: elasticsearch, fluentd-elasticsearch, and kibana should all be enabled
@@ -60,7 +55,7 @@ aws-alb-ingress-controller:
 
 # Replace false with true to deploy EFK.
 # Do not remove &deploy_efk; it is a yaml anchor which is referenced by the EFK subcharts.
-deploy_efk: &deploy_efk true
+deploy_efk: &deploy_efk false
 
 elasticsearch:
   enabled: *deploy_efk

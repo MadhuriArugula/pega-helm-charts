@@ -37,7 +37,7 @@ traefik:
 aws-load-balancer-controller:
   enabled: true
   ## Resources created by the ALB Ingress controller will be prefixed with this string
-  clusterName: "arugm-addons"
+  clusterName: ""
   ## Auto Discover awsRegion from ec2metadata, set this to true and omit awsRegion when ec2metadata is available.
   autoDiscoverAwsRegion: false
   ## AWS region of k8s cluster, required if ec2metadata is unavailable from controller pod
@@ -45,7 +45,7 @@ aws-load-balancer-controller:
   region: "us-east-1"
   ## VPC ID of k8s cluster, required if ec2metadata is unavailable from controller pod
   ## Required if autoDiscoverAwsVpcID != true
-  vpcId: "vpc-07e8fd2660b87dace"
+  vpcId: ""
 
 # Configure EFK stack for logging:
 # For a complete EFK stack: elasticsearch, fluentd-elasticsearch, and kibana should all be enabled

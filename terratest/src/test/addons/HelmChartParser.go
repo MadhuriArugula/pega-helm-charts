@@ -4,6 +4,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/helm"
 	"strings"
 	"testing"
+	"fmt"
 )
 
 type HelmChartParser struct {
@@ -13,6 +14,7 @@ type HelmChartParser struct {
 
 func NewHelmConfigParser(helmTest *HelmTest) *HelmChartParser {
 	parsedChart := helm.RenderTemplate(helmTest.T, helmTest.HelmOptions, helmTest.ChartPath, "pega",[]string{})
+	fmt.Println("Parsed chart---------",parsedChart)
 	slicedResource := strings.Split(parsedChart, "---")
 	return &HelmChartParser{T: helmTest.T, SlicedResource: slicedResource}
 }
@@ -20,6 +22,7 @@ func NewHelmConfigParser(helmTest *HelmTest) *HelmChartParser {
 func (p *HelmChartParser) Find(searchOptions SearchResourceOption, resource interface{}) {
 	var d DeploymentMetadata
 	for _, slice := range p.SlicedResource {
+		fmt.Println("SLICE-------",slice)
 		helm.UnmarshalK8SYaml(p.T, slice, &d)
 		if (searchOptions.Kind != "" && searchOptions.Kind == d.Kind) && (searchOptions.Name != "" && searchOptions.Name == d.Name) {
 			helm.UnmarshalK8SYaml(p.T, slice, &resource)

@@ -69,7 +69,7 @@ func Test_checkAutoDiscoverAwsRegion(t *testing.T) {
 		Kind: "Deployment",
 	}, &deployment)
 
-	require.NotContains(t, deployment.Spec.Template.Spec.Containers[0].Args, "--aws-region=YOUR_EKS_CLUSTER_REGION")
+	require.Contains(t, deployment.Spec.Template.Spec.Containers[0].Args, "--aws-region=YOUR_EKS_CLUSTER_REGION")
 }
 
 func Test_checkSetAwsVpcID(t *testing.T) {
@@ -88,24 +88,6 @@ func Test_checkSetAwsVpcID(t *testing.T) {
 	}, &deployment)
 
 	require.Contains(t, deployment.Spec.Template.Spec.Containers[0].Args, "--aws-vpc-id=YOUR_EKS_CLUSTER_VPC_ID")
-}
-
-func Test_checkAutoDiscoverAwsVpcID(t *testing.T) {
-	helmChart := NewHelmConfigParser(
-		NewHelmTest(t, helmChartRelativePath, map[string]string{
-			"aws-load-balancer-controller.enabled":              "true",
-			"aws-load-balancer-controller.autoDiscoverAwsVpcID": "true",
-			"aws-load-balancer-controller.vpcId":             "YOUR_EKS_CLUSTER_VPC_ID",
-		}),
-	)
-
-	var deployment *v1.Deployment
-	helmChart.Find(SearchResourceOption{
-		Name: "pega-aws-load-balancer-controller",
-		Kind: "Deployment",
-	}, &deployment)
-
-	require.NotContains(t, deployment.Spec.Template.Spec.Containers[0].Args, "--aws-vpc-id=YOUR_EKS_CLUSTER_VPC_ID")
 }
 
 func Test_checkSetClusterName(t *testing.T) {
@@ -152,11 +134,11 @@ var albIngressResources = []SearchResourceOption{
 		Kind: "ServiceAccount",
 	},
 	{
-		Name: "pega-aws-load-balancer-controller",
+		Name: "pega-aws-load-balancer-controller-role",
 		Kind: "ClusterRole",
 	},
 	{
-		Name: "pega-aws-load-balancer-controller",
+		Name: "pega-aws-load-balancer-controller-rolebinding",
 		Kind: "ClusterRoleBinding",
 	},
 	{

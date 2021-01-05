@@ -3,6 +3,7 @@ package addons
 import (
 	"github.com/stretchr/testify/require"
 	v1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	"testing"
 )
 
@@ -80,7 +81,7 @@ func Test_checkSetServiceAnnotation(t *testing.T) {
 		}),
 	)
 
-	var serviceAccount *v1.ServiceAccount
+	var serviceAccount *corev1.ServiceAccount
 	helmChart.Find(SearchResourceOption{
 		Name: "pega-aws-load-balancer-controller",
 		Kind: "Deployment",

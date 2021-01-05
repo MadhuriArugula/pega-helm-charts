@@ -85,9 +85,9 @@ func Test_checkSetServiceAnnotation(t *testing.T) {
 	helmChart.Find(SearchResourceOption{
 		Name: "pega-aws-load-balancer-controller",
 		Kind: "Deployment",
-	}, &service)
+	}, &serviceAccount)
 
-	require.Contains(t, serviceAccount.ObjectMeta.Annotations, "eks.amazonaws.com/role-arn:YOUR_IAM_ROLE_ARN")
+	require.Contains(t, serviceAccount.ObjectMeta.Annotations["eks.amazonaws.com/role-arn"], "YOUR_IAM_ROLE_ARN")
 }
 
 func Test_checkSetClusterName(t *testing.T) {

@@ -82,7 +82,7 @@ func Test_checkSetServiceAnnotation(t *testing.T) {
 	var serviceAccount *corev1.ServiceAccount
 	helmChart.Find(SearchResourceOption{
 		Name: "pega-aws-load-balancer-controller",
-		Kind: "Deployment",
+		Kind: "ServiceAccount",
 	}, &serviceAccount)
 
 	require.Contains(t, serviceAccount.ObjectMeta.Annotations["eks.amazonaws.com/role-arn"], "YOUR_IAM_ROLE_ARN")

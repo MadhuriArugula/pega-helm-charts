@@ -76,11 +76,9 @@ func Test_checkSetAwsVpcID(t *testing.T) {
 func Test_checkSetServiceAnnotation(t *testing.T) {
 	helmChart := NewHelmConfigParser(
 		NewHelmTest(t, helmChartRelativePath, map[string]string{
-			"aws-load-balancer-controller.enabled":              "true",
-			"aws-load-balancer-controller.serviceAccount.annotations[eks.amazonaws.com/role-arn]":             "YOUR_IAM_ROLE_ARN",
+			"aws-load-balancer-controller.enabled":              "true"
 		}),
 	)
-
 	var serviceAccount *corev1.ServiceAccount
 	helmChart.Find(SearchResourceOption{
 		Name: "pega-aws-load-balancer-controller",

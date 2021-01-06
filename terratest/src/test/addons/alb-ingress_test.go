@@ -76,7 +76,7 @@ func Test_checkSetAwsVpcID(t *testing.T) {
 func Test_checkSetServiceAnnotation(t *testing.T) {
 	helmChart := NewHelmConfigParser(
 		NewHelmTest(t, helmChartRelativePath, map[string]string{
-			"aws-load-balancer-controller.enabled":              "true"
+			"aws-load-balancer-controller.enabled":              "true",
 		}),
 	)
 	var serviceAccount *corev1.ServiceAccount
